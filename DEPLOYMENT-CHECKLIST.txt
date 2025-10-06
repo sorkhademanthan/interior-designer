@@ -1,0 +1,193 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║              AURORA ATELIER - DEPLOYMENT CHECKLIST                        ║
+║                    Follow these steps in order                            ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+STEP 1: PREPARE CODE (5 minutes)
+═══════════════════════════════════════
+□ Updated API URLs in frontend (DONE ✓)
+□ Test backend locally: npm run dev (in server/)
+□ Test frontend locally: npm start (in client/)
+□ Commit and push changes to GitHub
+
+Commands:
+  cd server && npm run dev
+  # Test: http://localhost:5001/api/health
+  
+  cd client && npm start  
+  # Test: http://localhost:3001
+  
+  git add .
+  git commit -m "Prepare for production deployment"
+  git push origin main
+
+
+STEP 2: MONGODB ATLAS (Skip if already set up)
+═══════════════════════════════════════
+□ Sign up: https://www.mongodb.com/cloud/atlas/register
+□ Create cluster (Shared/Free tier)
+□ Create database user
+  Username: aurora_admin
+  Password: [SAVE THIS PASSWORD]
+□ Whitelist IP: 0.0.0.0/0
+□ Get connection string
+  mongodb+srv://aurora_admin:PASSWORD@aurora.xxxxx.mongodb.net/aurora-atelier
+□ Test connection locally by updating server/.env
+
+
+STEP 3: DEPLOY BACKEND TO RENDER (15 minutes)
+═══════════════════════════════════════
+□ Sign up: https://render.com
+□ Click "New +" → "Web Service"
+□ Connect GitHub repository
+□ Configure:
+  Name: aurora-atelier-api
+  Root Directory: server
+  Build: npm install
+  Start: npm start
+  
+□ Add Environment Variables:
+  NODE_ENV = production
+  MONGODB_URI = [Your MongoDB connection string]
+  EMAIL_USER = [Your Gmail]
+  EMAIL_PASSWORD = [Your Gmail App Password]
+  NOTIFICATION_EMAIL = [Your email]
+  PORT = 10000
+  CLIENT_URL = https://YOUR-FRONTEND.vercel.app (Update later)
+  
+□ Click "Create Web Service"
+□ Wait for deployment (5-10 min)
+□ Copy backend URL: https://aurora-atelier-api.onrender.com
+□ Test: https://aurora-atelier-api.onrender.com/api/health
+
+
+STEP 4: UPDATE FRONTEND CONFIG (2 minutes)
+═══════════════════════════════════════
+□ Edit: client/.env.production
+  Change: REACT_APP_API_URL=https://YOUR-BACKEND-URL.onrender.com
+  
+□ Test build locally:
+  cd client
+  npm run build
+  
+□ Commit changes:
+  git add .
+  git commit -m "Update production API URL"
+  git push origin main
+
+
+STEP 5: DEPLOY FRONTEND TO VERCEL (10 minutes)
+═══════════════════════════════════════
+□ Sign up: https://vercel.com/signup (use GitHub)
+□ Click "Add New..." → "Project"
+□ Import: aurora-atelier-mern
+□ Configure:
+  Framework: Create React App
+  Root Directory: client
+  Build Command: npm run build
+  Output Directory: build
+  
+□ Add Environment Variable:
+  REACT_APP_API_URL = https://aurora-atelier-api.onrender.com
+  
+□ Click "Deploy"
+□ Wait 2-3 minutes
+□ Copy frontend URL: https://aurora-atelier-xxxxx.vercel.app
+
+
+STEP 6: UPDATE BACKEND CORS (3 minutes)
+═══════════════════════════════════════
+□ Go back to Render dashboard
+□ Open your backend service
+□ Go to "Environment" tab
+□ Update CLIENT_URL:
+  CLIENT_URL = https://aurora-atelier-xxxxx.vercel.app
+  
+□ Save changes
+□ Wait for auto-redeploy (~2 min)
+
+
+STEP 7: TEST PRODUCTION (10 minutes)
+═══════════════════════════════════════
+□ Visit frontend: https://aurora-atelier-xxxxx.vercel.app
+□ Homepage loads ✓
+□ Navigation works ✓
+□ Portfolio loads ✓
+
+□ Test Book Consultation Form:
+  - Fill form
+  - Submit
+  - Check for success message
+  - Check email inbox/spam
+  
+□ Test Start Project Form:
+  - Complete all 5 steps
+  - Submit
+  - Check for success message
+  - Check email inbox/spam
+  
+□ Test Mobile:
+  - Open DevTools (F12)
+  - Toggle device toolbar
+  - Test on iPhone size
+  
+□ Check browser console for errors
+
+
+═══════════════════════════════════════
+YOUR DEPLOYED URLS
+═══════════════════════════════════════
+Frontend: ________________________________
+Backend:  ________________________________
+Database: MongoDB Atlas
+
+
+═══════════════════════════════════════
+COMMON ISSUES
+═══════════════════════════════════════
+
+1. CORS Error:
+   - Check CLIENT_URL in Render matches Vercel URL
+   - Wait for backend to redeploy
+
+2. Backend 500 Error:
+   - Check Render logs
+   - Verify MongoDB connection string
+   - Check all environment variables
+
+3. Forms not submitting:
+   - Check API URL in .env.production
+   - Check Network tab in DevTools
+   - Verify backend is running
+
+4. No emails:
+   - Verify Gmail App Password (not regular password)
+   - Check spam folder
+   - Check backend logs
+
+5. Backend slow (first request):
+   - Normal! Free tier sleeps after 15min
+   - First request takes 30-60 seconds
+
+
+═══════════════════════════════════════
+DEPLOYMENT COMPLETE! 🎉
+═══════════════════════════════════════
+
+Your application is LIVE on the internet!
+
+Share it:
+- Add to portfolio
+- Share on LinkedIn
+- Show to clients/friends
+
+Next steps (Optional):
+□ Add custom domain
+□ Set up analytics
+□ Add monitoring
+□ Optimize performance
+
+
+═══════════════════════════════════════
+Need help? Check DEPLOYMENT-GUIDE.md
+═══════════════════════════════════════
