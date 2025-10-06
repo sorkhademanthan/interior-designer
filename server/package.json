@@ -1,7 +1,7 @@
 {
   "name": "aurora-atelier-server",
   "version": "1.0.0",
-  "description": "Backend server for Aurora Atelier",
+  "description": "Backend REST API server for Aurora Atelier - Luxury Interior Design Platform. Provides consultation and project management endpoints with MongoDB integration and email notifications.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,10 +11,27 @@
   "keywords": [
     "express",
     "mongodb",
-    "consultation"
+    "interior-design",
+    "consultation",
+    "REST-API",
+    "luxury",
+    "nodemailer",
+    "mongoose"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Aurora Atelier Development Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/aurora-atelier-mern.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/aurora-atelier-mern/issues"
+  },
+  "homepage": "https://github.com/yourusername/aurora-atelier-mern#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
