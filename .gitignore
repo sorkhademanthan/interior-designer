@@ -1,3 +1,9 @@
+# Root-level client files (client code is in /client folder)
+/package.json
+/package-lock.json
+/public
+/src
+
 # Dependencies
 node_modules/
 /.pnp
