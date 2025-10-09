@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import { apiFetch } from '../utils/api';
 
 const BookConsultationPage = () => {
   const navigate = useNavigate();
@@ -42,18 +43,14 @@ const BookConsultationPage = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-
     try {
-      const response = await fetch(`${API_URL}/api/consultations`, {
+      const { response, data } = await apiFetch('/api/consultations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         setSubmitStatus({ type: 'success', message: 'Consultation request submitted successfully! We will contact you soon.' });
@@ -72,7 +69,7 @@ const BookConsultationPage = () => {
       } else {
         setSubmitStatus({ 
           type: 'error', 
-          message: data.message || 'Failed to submit. Please try again.' 
+          message: (data && data.message) || 'Failed to submit. Please try again.' 
         });
       }
     } catch (error) {

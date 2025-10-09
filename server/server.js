@@ -9,6 +9,12 @@ const projectRoutes = require('./routes/projectRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Normalize repeated slashes in URLs (e.g., //api/consultations -> /api/consultations)
+app.use((req, _res, next) => {
+  if (req.url.includes('//')) req.url = req.url.replace(/\/+\/+/g, '/');
+  next();
+});
+
 app.use(helmet());
 app.use(cors({
   origin: [

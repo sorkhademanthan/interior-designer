@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import { apiFetch } from '../utils/api';
 
 const StartProjectPage = () => {
   const navigate = useNavigate();
@@ -104,18 +105,14 @@ const StartProjectPage = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-
     try {
-      const response = await fetch(`${API_URL}/api/projects`, {
+      const { response, data } = await apiFetch('/api/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         setSubmitStatus({ 
@@ -128,7 +125,7 @@ const StartProjectPage = () => {
       } else {
         setSubmitStatus({ 
           type: 'error', 
-          message: data.message || 'Failed to submit. Please try again.' 
+          message: (data && data.message) || 'Failed to submit. Please try again.' 
         });
       }
     } catch (error) {
